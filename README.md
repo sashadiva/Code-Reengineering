@@ -1,3 +1,13 @@
+# Code Reengineering
+1. Identify a code smell in the **src** folder
+2. Refactor it in the **refactoring** folder
+3. Screenshot a before and after, and put it in the canva (https://canva.link/pzk9qptvmjeqmcw)
+4. In the before slide, explain what the identified code smell is and why it is a problem
+5. In the after slide, explain the method used for refactoring and why it is used
+
+(Untuk laporan nanti dulu)
+
+
 # Console-based Expense Tracker
 
 Console-based Expense Tracker is a Java-based console application that helps users manage their expenses. This project
