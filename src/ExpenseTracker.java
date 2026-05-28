@@ -16,8 +16,8 @@ public class ExpenseTracker {
     private static Map<String, Double> categoryBudgets = new HashMap<>();
 
     public static void main(String[] args) {
-        loadExpensesFromFile(); // Load expenses from file if available before starting the application.
-        loadBudgetsFromFile(); // Load budgets from file if available before starting the application.
+        expenses = ExpenseStorage.loadExpenses(); // Load expenses from file if available before starting the application.
+        categoryBudgets = ExpenseStorage.loadBudgets(); // Load budgets from file if available before starting the application.
 
         // Start the application loop to handle user input and perform corresponding actions
         while (true) {
@@ -33,7 +33,7 @@ public class ExpenseTracker {
                     break;
                 case 3: // For Set budget
                     setBudget();
-                    saveBudgetsToFile();
+                    ExpenseStorage.saveBudgets(categoryBudgets);
                     System.out.println("Budget set successfully.");
                     break;
                 case 4: // For View budgets
@@ -46,16 +46,14 @@ public class ExpenseTracker {
                     convertCurrency();
                     break;
                 case 7: // For Save and Load data
-                    saveExpensesToFile();
-                    System.out.println("Expenses saved successfully.");
+                    ExpenseStorage.saveExpenses(expenses);
                     break;
                 case 8: // For Save and Load data
-                    loadExpensesFromFile();
-                    System.out.println("Expenses loaded successfully.");
+                    expenses = ExpenseStorage.loadExpenses();
                     break;
                 case 9: // For Exit
-                    saveExpensesToFile();
-                    saveBudgetsToFile();
+                    ExpenseStorage.saveExpenses(expenses);
+                    ExpenseStorage.saveBudgets(categoryBudgets);
                     System.out.println("Exiting Expense Tracker. Goodbye!");
                     System.exit(0);
                 default: // Invalid choice entered
@@ -260,51 +258,5 @@ public class ExpenseTracker {
         }
     }
 
-    @SuppressWarnings("unchecked") // Load and save the budget list to a file
-    private static void loadBudgetsFromFile() {
-
-        // Load the budget list from a file if it exists
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(BUDGETS_FILE_NAME))) {
-            categoryBudgets = (Map<String, Double>) ois.readObject(); // Read the budget list from the file
-            System.out.println("Budgets loaded successfully.");
-        } catch (IOException | ClassNotFoundException e) { // No existing budgets found
-            System.out.println("No existing budgets found. Starting with an empty budget list.");
-        }
-    }
-
-    // Save the budget list to a file if it exists
-    private static void saveBudgetsToFile() {
-
-        // Save the budget list to a file if it exists
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BUDGETS_FILE_NAME))) {
-            oos.writeObject(categoryBudgets); // Write the budget list to the file
-            System.out.println("Budgets saved successfully.");
-        } catch (IOException e) { // Error saving the budget list
-            System.out.println("Error saving budgets to file.");
-        }
-    }
-
-    @SuppressWarnings("unchecked") // Load the expense list from a file if it exists
-    private static void loadExpensesFromFile() {
-
-        // Load the expense list from a file if it exists
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(EXPENSES_FILE_NAME))) {
-            expenses = (List<Expense>) ois.readObject(); // Read the expense list from the file
-            System.out.println("Expenses loaded successfully.");
-        } catch (IOException | ClassNotFoundException e) { // No existing expenses found
-            System.out.println("No existing expenses found. Starting with an empty expense list.");
-        }
-    }
-
-    // Save the expense list to a file if it exists
-    private static void saveExpensesToFile() {
-
-        // Save the expense list to a file if it exists
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(EXPENSES_FILE_NAME))) {
-            oos.writeObject(expenses); // Write the expense list to the file
-            System.out.println("Expenses saved successfully.");
-        } catch (IOException e) { // Error saving the expense list
-            System.out.println("Error saving expenses to file.");
-        }
-    }
+    
 }
