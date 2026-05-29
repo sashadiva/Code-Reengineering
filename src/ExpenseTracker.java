@@ -177,6 +177,13 @@ public class ExpenseTracker {
 
         userInput.nextLine(); // Consume any lingering newline characters
 
+        Currency targetCurrency = promptForTargetCurrency();
+        System.out.println("\n===== Currency Conversion =====");
+        printConvertedExpenses(targetCurrency);
+    }
+
+    // Prompt user for a valid target currency code and return the Currency instance
+    private static Currency promptForTargetCurrency() {
         boolean validCurrencyCode = false; // Flag to track if the currency code is valid
         Currency targetCurrency = null; // Variable to store the target currency
 
@@ -194,9 +201,11 @@ public class ExpenseTracker {
             }
         }
 
-        System.out.println("\n===== Currency Conversion =====");
+        return targetCurrency;
+    }
 
-        // Use NumberFormat to format currency amounts in the target currency with 2 decimal places
+    // Print converted expenses using the provided target currency
+    private static void printConvertedExpenses(Currency targetCurrency) {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         currencyFormatter.setCurrency(targetCurrency); // Set the target currency for formatting
 

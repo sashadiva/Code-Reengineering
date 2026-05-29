@@ -5,43 +5,51 @@ public class ExpenseStorage {
     private static final String EXPENSES_FILE_NAME = "expenses.txt";
     private static final String BUDGETS_FILE_NAME = "budgets.txt";
 
-    @SuppressWarnings("unchecked")
     public static List<Expense> loadExpenses() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(EXPENSES_FILE_NAME))) {
-            System.out.println("Expenses loaded successfully.");
-            return (List<Expense>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("No existing expenses found. Starting with an empty expense list.");
-            return new ArrayList<>();
-        }
+        return loadObject(EXPENSES_FILE_NAME,
+                new ArrayList<>(),
+                "Expenses loaded successfully.",
+                "No existing expenses found. Starting with an empty expense list.");
     }
 
     public static void saveExpenses(List<Expense> expenses) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(EXPENSES_FILE_NAME))) {
-            oos.writeObject(expenses);
-            System.out.println("Expenses saved successfully.");
-        } catch (IOException e) {
-            System.out.println("Error saving expenses to file.");
-        }
+        saveObject(expenses,
+                EXPENSES_FILE_NAME,
+                "Expenses saved successfully.",
+                "Error saving expenses to file.");
     }
 
-    @SuppressWarnings("unchecked")
     public static Map<String, Double> loadBudgets() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(BUDGETS_FILE_NAME))) {
-            System.out.println("Budgets loaded successfully.");
-            return (Map<String, Double>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("No existing budgets found. Starting with an empty budget list.");
-            return new HashMap<>();
-        }
+        return loadObject(BUDGETS_FILE_NAME,
+                new HashMap<>(),
+                "Budgets loaded successfully.",
+                "No existing budgets found. Starting with an empty budget list.");
     }
 
     public static void saveBudgets(Map<String, Double> budgets) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BUDGETS_FILE_NAME))) {
-            oos.writeObject(budgets);
-            System.out.println("Budgets saved successfully.");
+        saveObject(budgets,
+                BUDGETS_FILE_NAME,
+                "Budgets saved successfully.",
+                "Error saving budgets to file.");
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T loadObject(String fileName, T defaultValue, String successMessage, String failureMessage) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            System.out.println(successMessage);
+            return (T) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(failureMessage);
+            return defaultValue;
+        }
+    }
+
+    private static void saveObject(Object object, String fileName, String successMessage, String failureMessage) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(object);
+            System.out.println(successMessage);
         } catch (IOException e) {
-            System.out.println("Error saving budgets to file.");
+            System.out.println(failureMessage);
         }
     }
 }
