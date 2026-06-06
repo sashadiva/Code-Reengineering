@@ -61,3 +61,58 @@
 ### Catatan Tambahan
 
 * Refactor difokuskan hanya pada God Class.
+
+---
+
+## 2. Refactoring Long Method
+
+### Ringkasan Perubahan
+
+* Memperpendek method `convertCurrency()` di `ExpenseTracker`.
+* Menambahkan helper method:
+
+  * `promptForTargetCurrency()`
+  * `printConvertedExpenses(Currency targetCurrency)`
+
+### Code Smell
+
+* **Long Method**
+
+### Definisi
+
+* Method yang terlalu panjang atau memiliki terlalu banyak tanggung jawab.
+
+### Alasan Implementasi Sebelumnya Termasuk Code Smell
+
+* `convertCurrency()` sebelumnya menangani validasi input, parsing currency, formatting, konversi nilai, dan pencetakan output dalam satu method.
+
+### Perubahan yang Dilakukan
+
+* Mengekstrak logic validasi currency dan pencetakan hasil ke helper method terpisah.
+
+### Alasan Refactor Meningkatkan Kualitas
+
+* **Maintainability:** Perubahan pada input validation dan output conversion lebih terisolasi.
+* **Readability:** Flow method utama lebih mudah dipahami.
+* **Modularity:** Tanggung jawab dipisahkan ke method kecil.
+
+### File yang Diubah
+
+* `src/ExpenseTracker.java`
+
+### File Baru yang Dibuat
+
+* `-`
+
+### Method/Logic yang Dipindahkan
+
+* Logic validasi currency → `promptForTargetCurrency()`
+* Logic konversi dan output → `printConvertedExpenses(Currency targetCurrency)`
+
+### Teknik Refactor yang Digunakan
+
+* `Extract Method`
+
+### Catatan Tambahan
+
+* Tidak ada perubahan behavior maupun output program.
