@@ -228,3 +228,60 @@
 ### Catatan Tambahan
 
 * Behavior dan output program tetap sama.
+
+---
+
+## 5. Refactoring Data Class
+
+### Ringkasan Perubahan
+
+* Menambahkan behavior domain pada `Expense`.
+* Memindahkan logic formatting dan conversion dari `ExpenseTracker` ke `Expense`.
+
+### Code Smell
+
+* **Data Class**
+
+### Definisi
+
+* Kelas yang hanya menyimpan data tanpa behavior domain yang relevan.
+
+### Alasan Implementasi Sebelumnya Termasuk Code Smell
+
+* `Expense` sebelumnya hanya menyimpan data, sementara logic formatting dan konversi dilakukan di `ExpenseTracker`.
+
+### Perubahan yang Dilakukan
+
+* Menambahkan method:
+
+  * `convertAmount(double conversionRate)`
+  * `formatHistoryEntry(SimpleDateFormat dateFormat)`
+  * `formatConversionEntry(NumberFormat currencyFormatter, double conversionRate)`
+
+### Alasan Refactor Meningkatkan Kualitas
+
+* **Maintainability:** Domain logic formatting terpusat di `Expense`.
+* **Readability:** `ExpenseTracker` menjadi lebih ringkas.
+* **Encapsulation:** Object domain mengelola representasi dirinya sendiri.
+
+### File yang Diubah
+
+* `src/Expense.java`
+* `src/ExpenseTracker.java`
+
+### File Baru yang Dibuat
+
+* `-`
+
+### Method/Logic yang Dipindahkan
+
+* Logic formatting history dan conversion output dipindahkan dari `ExpenseTracker` ke `Expense`.
+
+### Teknik Refactor yang Digunakan
+
+* `Move Method`
+* `Introduce Domain Behavior`
+
+### Catatan Tambahan
+
+* Tidak ada perubahan behavior output program.

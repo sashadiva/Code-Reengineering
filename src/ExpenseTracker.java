@@ -9,7 +9,7 @@ public class ExpenseTracker {
     private static List<Expense> expenses = new ArrayList<>(); // List to store expenses
 
     // Map to store category budgets for each category with default values set to 0
-    private static Map<ExpenseCategory, Double> categoryBudgets = new HashMap<>();
+    private static Map<String, Double> categoryBudgets = new HashMap<>();
 
     public static void main(String[] args) {
         expenses = ExpenseStorage.loadExpenses(); // Load expenses from file if available before starting the application.
@@ -132,10 +132,11 @@ public class ExpenseTracker {
     // Set a budget for a specific category and save it to the budget list
     private static void setBudget() {
         System.out.print("Enter the expense category to set a budget: ");
-        String categoryName = userInput.nextLine();
-        ExpenseCategory category = new ExpenseCategory(categoryName);
 
-        // Check if the category exists in the list of budgets and get the current budget
+        // Convert to lowercase for case-insensitive comparison in the list of expenses
+        String category = userInput.nextLine().toLowerCase();
+
+        // Check if the category exists in the list of expenses and get the current budget
         if (categoryBudgets.containsKey(category)) {
             System.out.printf("Current budget for category '%s': $%.2f\n",
                     category, categoryBudgets.get(category));
@@ -205,15 +206,7 @@ public class ExpenseTracker {
         currencyFormatter.setCurrency(targetCurrency); // Set the target currency for formatting
 
         for (Expense expense : expenses) {
-            // Convert the expense amount from USD to the target currency
-            double convertedAmount = expense.getAmount() * CONVERSION_RATE;
-
-            // Format original and converted amounts using NumberFormat
-            String originalAmountFormatted = currencyFormatter.format(expense.getAmount());
-            String convertedAmountFormatted = currencyFormatter.format(convertedAmount);
-
-            System.out.printf("%s - Original: %s - Converted: %s\n",
-                    expense.getDescription(), originalAmountFormatted, convertedAmountFormatted);
+            System.out.println(expense.formatConversionEntry(currencyFormatter, CONVERSION_RATE));
         }
     }
 
@@ -255,12 +248,8 @@ public class ExpenseTracker {
 
             // Display each expense in the list with its timestamp, category, amount, and description
             for (Expense expense : expenses) {
-                System.out.printf("%s - Category: %s - Amount: $%.2f - Description: %s\n",
-                        dateFormat.format(expense.getTimestamp()), expense.getCategory(),
-                        expense.getAmount(), expense.getDescription());
+                System.out.println(expense.formatHistoryEntry(dateFormat));
             }
         }
-    }
-
-    
+    }    
 }

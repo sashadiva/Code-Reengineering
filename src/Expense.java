@@ -34,6 +34,22 @@ class Expense implements Serializable {
         return timestamp;
     }
 
+    public double convertAmount(double conversionRate) {
+        return amount * conversionRate;
+    }
+
+    public String formatHistoryEntry(java.text.SimpleDateFormat dateFormat) {
+        return String.format("%s - Category: %s - Amount: $%.2f - Description: %s",
+                dateFormat.format(timestamp), category, amount, description);
+    }
+
+    public String formatConversionEntry(java.text.NumberFormat currencyFormatter, double conversionRate) {
+        return String.format("%s - Original: %s - Converted: %s",
+                description,
+                currencyFormatter.format(amount),
+                currencyFormatter.format(convertAmount(conversionRate)));
+    }
+
     /* Override the toString() method to display the expense in a readable format
      with the timestamp, category, amount, and description*/
     @Override
