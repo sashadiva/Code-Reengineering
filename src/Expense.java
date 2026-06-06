@@ -7,11 +7,11 @@ class Expense implements Serializable {
     private static final long serialVersionUID = 1L; // For serializing and deserializing objects.
 
     private final double amount; // Amount of the expense
-    private final String category; // Category of the expense
+    private final ExpenseCategory category; // Category of the expense
     private final String description; // Description of the expense
     private final Date timestamp; // Timestamp of the expense
 
-    public Expense(double amount, String category, String description) {
+    public Expense(double amount, ExpenseCategory category, String description) {
         this.amount = amount;
         this.category = category;
         this.description = description;
@@ -22,7 +22,7 @@ class Expense implements Serializable {
         return amount;
     }
 
-    public String getCategory() {
+    public ExpenseCategory getCategory() {
         return category;
     }
 

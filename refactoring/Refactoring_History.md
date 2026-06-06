@@ -116,3 +116,115 @@
 ### Catatan Tambahan
 
 * Tidak ada perubahan behavior maupun output program.
+
+---
+
+## 3. Refactoring Duplicate Code
+
+### Ringkasan Perubahan
+
+* Menghilangkan duplikasi logic file I/O pada `ExpenseStorage`.
+* Menambahkan helper method generik:
+
+  * `loadObject(...)`
+  * `saveObject(...)`
+
+### Code Smell
+
+* **Duplicate Code**
+
+### Definisi
+
+* Potongan kode yang sama atau sangat mirip muncul di beberapa tempat.
+
+### Alasan Implementasi Sebelumnya Termasuk Code Smell
+
+* `loadExpenses()`, `saveExpenses()`, `loadBudgets()`, dan `saveBudgets()` memiliki struktur `try/catch` yang hampir identik.
+
+### Perubahan yang Dilakukan
+
+* Mengonsolidasikan logic load/save ke helper generik.
+
+### Alasan Refactor Meningkatkan Kualitas
+
+* **Maintainability:** Perubahan logic I/O cukup dilakukan di satu tempat.
+* **Readability:** Struktur class lebih ringkas.
+* **Scalability:** Menambahkan persistence object baru menjadi lebih mudah.
+
+### File yang Diubah
+
+* `src/ExpenseStorage.java`
+
+### File Baru yang Dibuat
+
+* `-`
+
+### Method/Logic yang Dipindahkan
+
+* Logic `try/catch` pada method load/save dipindahkan ke:
+
+  * `loadObject(...)`
+  * `saveObject(...)`
+
+### Teknik Refactor yang Digunakan
+
+* `Extract Method`
+* `Replace Duplicate Code with Helper Method`
+
+### Catatan Tambahan
+
+* Refactor tetap terisolasi hanya pada Duplicate Code.
+
+---
+
+## 4. Refactoring Primitive Obsession
+
+### Ringkasan Perubahan
+
+* Mengurangi penggunaan primitive `String` untuk kategori expense.
+* Menambahkan value object baru `ExpenseCategory`.
+
+### Code Smell
+
+* **Primitive Obsession**
+
+### Definisi
+
+* Penggunaan primitive type untuk merepresentasikan konsep domain yang seharusnya dimodelkan sebagai object.
+
+### Alasan Implementasi Sebelumnya Termasuk Code Smell
+
+* Kategori expense direpresentasikan langsung menggunakan `String`, padahal kategori merupakan konsep domain yang memiliki makna khusus.
+
+### Perubahan yang Dilakukan
+
+* Mengubah field `category` menjadi `ExpenseCategory`.
+* Mengubah summary map menjadi `Map<ExpenseCategory, Double>`.
+
+### Alasan Refactor Meningkatkan Kualitas
+
+* **Maintainability:** Validasi dan representasi kategori terpusat.
+* **Readability:** Domain model menjadi lebih jelas.
+* **Scalability:** Category dapat dikembangkan dengan behavior tambahan.
+
+### File yang Diubah
+
+* `src/Expense.java`
+* `src/ExpenseTracker.java`
+
+### File Baru yang Dibuat
+
+* `src/ExpenseCategory.java`
+
+### Method/Logic yang Dipindahkan
+
+* Representasi category dipindahkan dari primitive `String` ke object domain `ExpenseCategory`.
+
+### Teknik Refactor yang Digunakan
+
+* `Replace Primitive with Object`
+* `Extract Class`
+
+### Catatan Tambahan
+
+* Behavior dan output program tetap sama.

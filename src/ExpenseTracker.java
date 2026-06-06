@@ -1,19 +1,15 @@
-import java.io.*; // For handling file I/O
 import java.text.NumberFormat; // For formatting numbers in currency format
 import java.text.SimpleDateFormat; // For formatting date and time
 import java.util.*; // For handling user input and data storage and manipulation.
 
 public class ExpenseTracker {
-    // Define file names for expenses and budgets files
-    private static final String EXPENSES_FILE_NAME = "expenses.txt";
-    private static final String BUDGETS_FILE_NAME = "budgets.txt"; // File to store budgets
     private static final double CONVERSION_RATE = 110.70; // USD to BDT conversion rate
 
     private static final Scanner userInput = new Scanner(System.in);
     private static List<Expense> expenses = new ArrayList<>(); // List to store expenses
 
     // Map to store category budgets for each category with default values set to 0
-    private static Map<String, Double> categoryBudgets = new HashMap<>();
+    private static Map<ExpenseCategory, Double> categoryBudgets = new HashMap<>();
 
     public static void main(String[] args) {
         expenses = ExpenseStorage.loadExpenses(); // Load expenses from file if available before starting the application.
@@ -98,7 +94,7 @@ public class ExpenseTracker {
         String description = userInput.nextLine();
 
         // Validate the input values and add the expense to the list
-        Expense expense = new Expense(amount, category, description);
+        Expense expense = new Expense(amount, new ExpenseCategory(category), description);
         expenses.add(expense); // Add the expense to the list
 
         System.out.println("Expense recorded successfully.");
@@ -118,7 +114,7 @@ public class ExpenseTracker {
             System.out.printf("Total Spending: $%.2f\n", totalSpending);
 
             // Create a map to store category-wise spending and display it in the list
-            Map<String, Double> categorySpending = new HashMap<>();
+            Map<ExpenseCategory, Double> categorySpending = new HashMap<>();
 
             // Calculate category-wise spending in the list
             for (Expense expense : expenses) {
@@ -136,11 +132,10 @@ public class ExpenseTracker {
     // Set a budget for a specific category and save it to the budget list
     private static void setBudget() {
         System.out.print("Enter the expense category to set a budget: ");
+        String categoryName = userInput.nextLine();
+        ExpenseCategory category = new ExpenseCategory(categoryName);
 
-        // Convert to lowercase for case-insensitive comparison in the list of expenses
-        String category = userInput.nextLine().toLowerCase();
-
-        // Check if the category exists in the list of expenses and get the current budget
+        // Check if the category exists in the list of budgets and get the current budget
         if (categoryBudgets.containsKey(category)) {
             System.out.printf("Current budget for category '%s': $%.2f\n",
                     category, categoryBudgets.get(category));

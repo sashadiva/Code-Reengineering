@@ -19,14 +19,14 @@ public class ExpenseStorage {
                 "Error saving expenses to file.");
     }
 
-    public static Map<String, Double> loadBudgets() {
+    public static Map<ExpenseCategory, Double> loadBudgets() {
         return loadObject(BUDGETS_FILE_NAME,
                 new HashMap<>(),
                 "Budgets loaded successfully.",
                 "No existing budgets found. Starting with an empty budget list.");
     }
 
-    public static void saveBudgets(Map<String, Double> budgets) {
+    public static void saveBudgets(Map<ExpenseCategory, Double> budgets) {
         saveObject(budgets,
                 BUDGETS_FILE_NAME,
                 "Budgets saved successfully.",
